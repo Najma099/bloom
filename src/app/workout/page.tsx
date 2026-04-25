@@ -1,14 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useSession } from "next-auth/react";
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 
 // Icons
-const PlayIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+const PlayIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className={className || "w-8 h-8"}>
         <path d="M8 5v14l11-7z" />
+    </svg>
+)
+
+const PauseIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className={className || "w-8 h-8"}>
+        <path d="M6 4h4v16H6zm8 0h4v16h-4z" />
+    </svg>
+)
+
+const StopIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className={className || "w-8 h-8"}>
+        <rect x="6" y="6" width="12" height="12" />
+    </svg>
+)
+
+const SkipForwardIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className || "w-6 h-6"}>
+        <path d="m6 17 5-5-5-5"></path><path d="m13 17 5-5-5-5"></path>
     </svg>
 )
 
@@ -19,132 +35,235 @@ const CheckCircleIcon = () => (
     </svg>
 )
 
+const TimerIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className || "w-5 h-5"}>
+        <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+    </svg>
+)
+
 const exercises = [
-    {
-        id: 1,
-        title: "Gentle Morning Flow",
-        duration: "5 min",
-        description: "A soft opening for your body, focusing on breath and light spinal movements to wake up your energy centers.",
-        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800",
-        videoUrl: "/assets/video/WhatsApp Video 2026-04-25 at 13.28.54.mp4"
-    },
-    {
-        id: 2,
-        title: "Luteal Core Stability",
-        duration: "8 min",
-        description: "Low-impact core engagement designed to provide stability and support for the lower back during your luteal phase.",
-        image: "https://images.unsplash.com/photo-1518611012118-29600000a646?q=80&w=800",
-        videoUrl: "/assets/video/WhatsApp Video 2026-04-25 at 14.30.05.mp4"
-    },
-    {
-        id: 3,
-        title: "Restorative Hip Release",
-        duration: "10 min",
-        description: "Longer holds in seated and supine positions to release tension in the hips and psoas, soothing the nervous system.",
-        image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800",
-        videoUrl: "/assets/video/WhatsApp Video 2026-04-25 at 14.25.11.mp4"
-    },
-    {
-        id: 4,
-        title: "Breath & Bloom Meditation",
-        duration: "5 min",
-        description: "A guided visualization and breathwork session to ground your energy and connect with your inner rhythm.",
-        image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800",
-        videoUrl: "/assets/video/WhatsApp Video 2026-04-25 at 14.24.07.mp4"
-    }
+    { id: 1, title: "Half Moon Pose", durationSec: 30, color: "#EDE6F4", videoUrl: "/assets/video/half_moon_pose.mp4", benefits: ["Lateral balance", "Hip opening", "Nervous system calm"] },
+    { id: 2, title: "Warrior II Flow", durationSec: 30, color: "#FCE8DA", videoUrl: "/assets/video/warrior-2.mp4", benefits: ["Lower body strength", "Hip mobility", "Endurance & Focus"] },
+    { id: 3, title: "Forward Lunges", durationSec: 30, color: "#DDEBD7", videoUrl: "/assets/video/Forward_lunges.mp4", benefits: ["Leg strength", "Grounding presence", "Stability"] },
+    { id: 4, title: "Stability Plank", durationSec: 30, color: "#FF8C7A22", videoUrl: "/assets/video/plank.mp4", benefits: ["Deep core power", "Back stability", "Pelvic floor connection"] }
 ]
 
 export default function WorkoutPage() {
-    const [currentExercise, setCurrentExercise] = useState(exercises[0]);
+    const [currentIdx, setCurrentIdx] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(30);
+    const [isPaused, setIsPaused] = useState(true);
+    const [isBreak, setIsBreak] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const currentExercise = exercises[currentIdx];
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (!isPaused && timeLeft > 0) {
+            timer = setInterval(() => {
+                setTimeLeft((prev) => prev - 1);
+            }, 1000);
+        } else if (timeLeft === 0 && !isPaused) {
+            handleAutoNext();
+        }
+        return () => clearInterval(timer);
+    }, [isPaused, timeLeft]);
+
+    const handleAutoNext = () => {
+        if (!isBreak) {
+            setIsBreak(true);
+            setTimeLeft(30);
+            if (videoRef.current) videoRef.current.pause();
+        } else {
+            handleSkip();
+        }
+    };
+
+    const handleSkip = () => {
+        if (isBreak) {
+            const nextIdx = currentIdx + 1;
+            if (nextIdx < exercises.length) {
+                setCurrentIdx(nextIdx);
+                setTimeLeft(exercises[nextIdx].durationSec);
+                setIsBreak(false);
+                setIsPaused(false);
+                if (videoRef.current) videoRef.current.play().catch(() => {});
+            } else {
+                handleComplete();
+            }
+        } else {
+            setIsBreak(true);
+            setTimeLeft(30);
+            setIsPaused(false); // Auto start break timer
+            if (videoRef.current) videoRef.current.pause();
+        }
+    };
+
+    const handleComplete = () => {
+        alert("Workout Complete! You've bloomed today.");
+        setIsPaused(true);
+        setCurrentIdx(0);
+        setTimeLeft(30);
+        setIsBreak(false);
+    }
+
+    const togglePlay = () => {
+        const nextPaused = !isPaused;
+        setIsPaused(nextPaused);
+        if (videoRef.current) {
+            if (!nextPaused) videoRef.current.play().catch(() => {});
+            else videoRef.current.pause();
+        }
+    };
+
+    const handleStop = () => {
+        setIsPaused(true);
+        if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+        }
+        setTimeLeft(isBreak ? 30 : exercises[currentIdx].durationSec);
+    };
+
+    const formatTime = (seconds: number) => {
+        if (isBreak) return seconds.toString();
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
 
     return (
         <div className="min-h-screen bg-[#FAF7F2] text-[#5A3E6B]">
             <Navbar activePage="move" />
 
-            <main className="max-w-7xl mx-auto px-6 md:px-10 py-10">
-                <div className="flex flex-col lg:flex-row gap-8">
-
-                    {/* VIDEO PLAYER SECTION */}
-                    <div className="lg:w-2/3">
-                        <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl bg-black group">
-                            {/* In a real app, this would be a <video> or <iframe> */}
-                            <video
-                                src={currentExercise.videoUrl}
-                                poster={currentExercise.image}
-                                className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
-                                muted
-                                loop
-                                autoPlay
-                                playsInline
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <button className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 hover:bg-white/30 transition-all transform hover:scale-110">
-                                    <PlayIcon />
-                                </button>
-                            </div>
-
-                            <div className="absolute bottom-6 left-8 right-8">
-                                <h1 className="font-serif text-3xl text-white mb-2">{currentExercise.title}</h1>
-                                <div className="flex items-center gap-4 text-white/80 text-sm">
-                                    <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">{currentExercise.duration}</span>
-                                    <span>Luteal Phase Recovery</span>
+            <main className="max-w-7xl mx-auto px-6 md:px-10 py-10 lg:py-16">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
+                    
+                    <div className="lg:w-[65%]">
+                        <div className="relative aspect-video rounded-[3rem] overflow-hidden shadow-2xl bg-black border-8 border-white group">
+                            {isBreak ? (
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#5A3E6B] to-[#3E2B4B] flex flex-col items-center justify-center text-white p-12 text-center animate-fade-in">
+                                    <div className="text-sm font-bold uppercase tracking-[0.3em] text-[#FF8C7A] mb-8">Rest Interval</div>
+                                    <h2 className="font-serif text-5xl mb-6">Take a Breath</h2>
+                                    <div className="text-9xl font-serif mb-12">{timeLeft}</div>
+                                    
+                                    <div className="flex gap-4">
+                                        <button onClick={togglePlay} className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center border border-white/20 hover:bg-white hover:text-[#5A3E6B] transition-all">
+                                            {isPaused ? <PlayIcon className="w-6 h-6" /> : <PauseIcon className="w-6 h-6" />}
+                                        </button>
+                                        <button onClick={handleSkip} className="px-8 py-4 rounded-full bg-[#FF8C7A] text-white font-bold uppercase tracking-widest text-xs flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all">
+                                            Skip Break <SkipForwardIcon className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <>
+                                    <video 
+                                        ref={videoRef}
+                                        src={currentExercise.videoUrl} 
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                        muted
+                                        loop
+                                        playsInline
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#5A3E6B]/60 via-transparent to-transparent flex flex-col justify-end p-12">
+                                        <div className="flex justify-between items-end">
+                                            <div>
+                                                <h1 className="font-serif text-5xl text-white mb-2">{currentExercise.title}</h1>
+                                                <div className="flex items-center gap-4 text-white/70 font-medium uppercase tracking-widest text-sm">
+                                                    <TimerIcon className="w-4 h-4" /> {formatTime(timeLeft)}
+                                                </div>
+                                            </div>
+                                            
+                                            {/* TIMER CONTROLS CONSOLE */}
+                                            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-xl p-3 rounded-[2.5rem] border border-white/20 shadow-2xl">
+                                                <button 
+                                                    onClick={togglePlay}
+                                                    className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${isPaused ? 'bg-[#FF8C7A] text-white hover:scale-110' : 'bg-white/20 text-white hover:bg-white/30'}`}
+                                                    title={isPaused ? "Start" : "Pause"}
+                                                >
+                                                    {isPaused ? <PlayIcon className="w-6 h-6" /> : <PauseIcon className="w-6 h-6" />}
+                                                </button>
+                                                <button 
+                                                    onClick={handleStop}
+                                                    className="w-14 h-14 rounded-full bg-white/20 text-white flex items-center justify-center hover:bg-red-500 transition-all"
+                                                    title="Stop"
+                                                >
+                                                    <StopIcon className="w-6 h-6" />
+                                                </button>
+                                                <button 
+                                                    onClick={handleSkip}
+                                                    className="w-14 h-14 rounded-full bg-white text-[#5A3E6B] flex items-center justify-center hover:scale-110 transition-all"
+                                                    title="Skip"
+                                                >
+                                                    <SkipForwardIcon className="w-6 h-6" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
-                        <div className="mt-8 bloom-card">
-                            <h2 className="font-serif text-2xl mb-4">About this movement</h2>
-                            <p className="text-[#5A3E6B]/80 leading-relaxed text-lg">
-                                {currentExercise.description}
-                            </p>
-                            <div className="mt-6 flex flex-wrap gap-4">
-                                <span className="flex items-center gap-2 text-sm text-[#5A3E6B]/60">
-                                    <CheckCircleIcon /> Eases lower back pain
-                                </span>
-                                <span className="flex items-center gap-2 text-sm text-[#5A3E6B]/60">
-                                    <CheckCircleIcon /> Calms the nervous system
-                                </span>
-                                <span className="flex items-center gap-2 text-sm text-[#5A3E6B]/60">
-                                    <CheckCircleIcon /> Supports pelvic circulation
-                                </span>
+                        <div className="mt-8 h-2 bg-white rounded-full overflow-hidden shadow-inner">
+                            <div 
+                                className="h-full bg-gradient-to-r from-[#E8A0BF] to-[#FF8C7A] transition-all duration-1000 shadow-[0_0_10px_#FF8C7A]" 
+                                style={{ width: `${((currentIdx + (isBreak ? 0.5 : 0)) / (exercises.length)) * 100}%` }}
+                            />
+                        </div>
+
+                        <div className="mt-12 grid md:grid-cols-2 gap-10">
+                            <div>
+                                <h2 className="font-serif text-3xl mb-6">About this flow</h2>
+                                <p className="text-[#5A3E6B]/70 line-height-relaxed text-lg italic mb-6">"{currentExercise.benefits[0]} focuses on grounding your energy while building subtle internal heat."</p>
+                                <div className="space-y-3">
+                                    {currentExercise.benefits.map((b, i) => (
+                                        <div key={i} className="flex items-center gap-3 bg-white p-4 rounded-2xl border border-[#C8B6E2]/10">
+                                            <CheckCircleIcon /> {b}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="bloom-card bg-white text-[#5A3E6B] p-10 flex flex-col justify-between relative overflow-hidden shadow-xl border-none">
+                                <div className="absolute top-0 right-0 p-8 opacity-10">
+                                    <TimerIcon className="w-24 h-24" />
+                                </div>
+                                <h3 className="font-serif text-3xl mb-6">Cycle Rhythm</h3>
+                                <p className="text-[#5A3E6B]/70 text-lg leading-relaxed italic mb-8 border-l-4 border-[#FF8C7A]/20 pl-6">
+                                    "Movement is medicine when it listens to your body. Today's flow is designed to be gentle but effective for your current phase."
+                                </p>
+                                <div className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#FF8C7A]">Tuned to your hormone health</div>
                             </div>
                         </div>
                     </div>
 
-                    {/* PLAYLIST SECTION */}
-                    <div className="lg:w-1/3">
-                        <div className="bloom-card h-full">
-                            <div className="mb-6">
-                                <h3 className="font-serif text-xl mb-1">Today's Flow</h3>
-                                <p className="text-sm text-[#5A3E6B]/60 tracking-wider uppercase">3 Movements · 10 Minutes Total</p>
-                            </div>
-
+                    <div className="lg:w-[35%]">
+                        <div className="bloom-card bg-white shadow-xl h-fit p-8 flex flex-col">
+                            <h3 className="font-serif text-3xl mb-8">Today's Flow</h3>
                             <div className="space-y-4">
-                                {exercises.map((ex) => (
-                                    <button
+                                {exercises.map((ex, idx) => (
+                                    <button 
                                         key={ex.id}
-                                        onClick={() => setCurrentExercise(ex)}
-                                        className={`w-full flex items-center gap-4 p-3 rounded-2xl transition-all duration-300 border-2 ${currentExercise.id === ex.id ? 'bg-[#C8B6E2]/10 border-[#C8B6E2]/30' : 'bg-white/40 border-transparent hover:border-[#C8B6E2]/10'}`}
+                                        onClick={() => {
+                                            setCurrentIdx(idx);
+                                            setTimeLeft(ex.durationSec);
+                                            setIsBreak(false);
+                                            setIsPaused(true);
+                                        }}
+                                        className={`w-full flex items-center gap-5 p-4 rounded-3xl border-2 transition-all ${currentIdx === idx ? 'bg-[#FAF7F2] border-[#FF8C7A]' : 'bg-white border-transparent opacity-60 hover:opacity-100'}`}
                                     >
-                                        <div className="w-20 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                                            <img src={ex.image} alt={ex.title} className="w-full h-full object-cover" />
+                                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-inner" style={{ backgroundColor: ex.color }}>
+                                            <TimerIcon className="w-6 h-6 opacity-40" />
                                         </div>
                                         <div className="text-left">
-                                            <h4 className="font-medium text-[#5A3E6B] leading-tight">{ex.id}. {ex.title}</h4>
-                                            <p className="text-xs text-[#5A3E6B]/50 mt-1">{ex.duration}</p>
+                                            <h4 className="font-serif text-lg">{ex.title}</h4>
+                                            <p className="text-[10px] font-bold text-[#FF8C7A] uppercase tracking-widest">30 Sec</p>
                                         </div>
                                     </button>
                                 ))}
                             </div>
-
-                            <button className="w-full mt-8 bloom-btn-primary py-4 rounded-2xl flex items-center justify-center gap-2 text-lg shadow-lg">
-                                Finish Workout
-                            </button>
                         </div>
                     </div>
-
                 </div>
             </main>
         </div>

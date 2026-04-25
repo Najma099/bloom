@@ -130,13 +130,13 @@ export default function DashboardPage() {
           <div className="bloom-card bg-white border-none shadow-xl relative overflow-hidden group min-h-[300px] flex flex-col justify-between">
             {/* Decorative background glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF8C7A]/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-            
+
             <div className="relative z-10 flex flex-col h-full justify-between">
               <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-bold text-[#5A3E6B]/40 mb-6">
                 <SparklesIcon className="w-4 h-4 text-[#FF8C7A]" /> Today's whisper
               </div>
               <p className="font-serif text-2xl md:text-3xl leading-relaxed text-[#5A3E6B]">
-                Your body isn't an obstacle to overcome. It's a miracle to be heard. 
+                Your body isn't an obstacle to overcome. It's a miracle to be heard.
                 <span className="text-[#FF8C7A] italic"> Listen closely today.</span>
               </p>
               <div className="mt-8 pt-6 border-t border-[#C8B6E2]/20 flex items-center justify-between">

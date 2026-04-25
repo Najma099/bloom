@@ -43,11 +43,11 @@ const LeafIcon = ({ className }: { className?: string }) => (
 const MEALS = [
     {
         id: 'm1',
-        name: 'Iron-Rich Beetroot Poha',
+        name: 'Iron-Rich Beetroot Rice',
         type: 'Breakfast',
         phase: 'Menstrual',
-        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop',
-        why: 'Iron-rich beetroot and grounding flattened rice gently replenish what your body releases.',
+        image: '/assets/images/Beetroot_rice.jpeg',
+        why: 'Iron-rich beetroot and grounding rice gently replenish what your body releases.',
         tags: ['Iron', 'Warming', 'Comfort'],
         icon: CoffeeIcon,
         phaseColor: '#C8B6E2',
@@ -58,7 +58,7 @@ const MEALS = [
         name: 'Healing Moong Khichdi',
         type: 'Lunch',
         phase: 'Menstrual',
-        image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=800&auto=format&fit=crop',
+        image: '/assets/images/moong_khichri.jpeg',
         why: 'Soft, easy to digest and warming — a hug in a bowl for your digestive system.',
         tags: ['Easy digest', 'Warming', 'Grounding'],
         icon: UtensilsIcon,
@@ -67,10 +67,10 @@ const MEALS = [
     },
     {
         id: 'm10',
-        name: 'Magnesium Almond Smoothie',
+        name: 'Magnesium Almond Milk',
         type: 'Breakfast',
         phase: 'Luteal',
-        image: 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=800&q=80&auto=format&fit=crop',
+        image: '/assets/images/Almond_milk.jpeg',
         why: 'Magnesium and healthy fats help calm cravings as your cycle winds down.',
         tags: ['Magnesium', 'Calming'],
         icon: CoffeeIcon,
@@ -82,7 +82,7 @@ const MEALS = [
         name: 'Palak Dal with Brown Rice',
         type: 'Lunch',
         phase: 'Luteal',
-        image: 'https://images.unsplash.com/photo-1626777553635-3e1bf5d6cabc?w=800&q=80&auto=format&fit=crop',
+        image: '/assets/images/Palak_dal_brownRice.jpeg',
         why: 'Spinach and lentils together — comforting, grounding and rich in iron.',
         tags: ['Iron', 'Grounding'],
         icon: UtensilsIcon,
@@ -94,7 +94,7 @@ const MEALS = [
         name: 'Roasted Pumpkin & Methi',
         type: 'Dinner',
         phase: 'Luteal',
-        image: 'https://images.unsplash.com/photo-1623938923480-1a690e66487e?w=800&q=80&auto=format&fit=crop',
+        image: '/assets/images/roasted_Pumkin.jpeg',
         why: 'Sweet pumpkin gently soothes cravings without spiking sugar.',
         tags: ['Soothing', 'Balanced'],
         icon: SoupIcon,
@@ -106,7 +106,7 @@ const MEALS = [
         name: 'Peak Performance Masala Oats',
         type: 'Breakfast',
         phase: 'Ovulatory',
-        image: 'https://images.unsplash.com/photo-1517673400267-0251440c45dc?w=800&q=80&auto=format&fit=crop',
+        image: '/assets/images/Masala_Oats.jpeg',
         why: 'Steady energy and fiber to match your peak-phase glow.',
         tags: ['Fiber', 'Sustained energy'],
         icon: CoffeeIcon,
@@ -118,11 +118,23 @@ const MEALS = [
         name: 'Rajma Chawal Bowl',
         type: 'Lunch',
         phase: 'Ovulatory',
-        image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&q=80&auto=format&fit=crop',
+        image: '/assets/images/rice_Rajma.jpeg',
         why: 'Plant protein and complex carbs to fuel your strongest workouts.',
         tags: ['Protein', 'Fuel'],
         icon: UtensilsIcon,
         phaseColor: '#FF8C7A',
+        textColor: 'white'
+    },
+    {
+        id: 'm13',
+        name: 'Grounding Roasted Squash',
+        type: 'Snack',
+        phase: 'Luteal',
+        image: '/assets/images/Roasted_squash.jpeg',
+        why: 'Warming and nutrient-dense, perfect for high-progesterone days.',
+        tags: ['Grounding', 'Fiber'],
+        icon: LeafIcon,
+        phaseColor: '#E8A0BF',
         textColor: 'white'
     }
 ];
@@ -144,7 +156,7 @@ export default function MealsPage() {
                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#FF8C7A] mb-3">
                             <LeafIcon className="w-4 h-4" /> Flavour of India
                         </div>
-                        <h1 className="font-serif text-5xl md:text-6xl tracking-tight text-[#5A3E6B]">Soulful Indian plates.</h1>
+                        <h1 className="font-serif text-5xl md:text-6xl tracking-tight text-[#5A3E6B]">Soulful Indian meal.</h1>
                     </div>
 
                     <div className="flex gap-2 p-1.5 rounded-full bg-white shadow-lg border border-[#C8B6E2]/20">

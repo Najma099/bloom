@@ -44,8 +44,8 @@ export default function OnboardingPage() {
 
                 <div className="bloom-card p-10 shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-[#FAF7F2]">
-                        <div 
-                            className="h-full bg-gradient-to-r from-[#E8A0BF] to-[#FF8C7A] transition-all duration-500" 
+                        <div
+                            className="h-full bg-gradient-to-r from-[#E8A0BF] to-[#FF8C7A] transition-all duration-500"
                             style={{ width: `${(step / 3) * 100}%` }}
                         />
                     </div>
@@ -56,33 +56,33 @@ export default function OnboardingPage() {
                             <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium mb-2">How old are you?</label>
-                                    <input 
-                                        type="number" 
-                                        placeholder="Age" 
+                                    <input
+                                        type="number"
+                                        placeholder="Age"
                                         className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
                                         value={formData.age}
-                                        onChange={(e) => setFormData({...formData, age: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                                     />
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium mb-2">Weight (kg)</label>
-                                        <input 
-                                            type="number" 
-                                            placeholder="kg" 
+                                        <input
+                                            type="number"
+                                            placeholder="kg"
                                             className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
                                             value={formData.weight}
-                                            onChange={(e) => setFormData({...formData, weight: e.target.value})}
+                                            onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-2">Height (cm)</label>
-                                        <input 
-                                            type="number" 
-                                            placeholder="cm" 
+                                        <input
+                                            type="number"
+                                            placeholder="cm"
                                             className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
                                             value={formData.height}
-                                            onChange={(e) => setFormData({...formData, height: e.target.value})}
+                                            onChange={(e) => setFormData({ ...formData, height: e.target.value })}
                                         />
                                     </div>
                                 </div>
@@ -96,10 +96,10 @@ export default function OnboardingPage() {
                             <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium mb-2">Dietary Preference</label>
-                                    <select 
+                                    <select
                                         className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
                                         value={formData.dietary}
-                                        onChange={(e) => setFormData({...formData, dietary: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
                                     >
                                         <option>Vegetarian</option>
                                         <option>Vegan</option>
@@ -109,10 +109,10 @@ export default function OnboardingPage() {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-2">Primary Goal</label>
-                                    <select 
+                                    <select
                                         className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
                                         value={formData.goal}
-                                        onChange={(e) => setFormData({...formData, goal: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
                                     >
                                         <option>Hormone Balance</option>
                                         <option>Weight Management</option>
@@ -130,12 +130,12 @@ export default function OnboardingPage() {
                             <div className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium mb-2">Average Cycle Length (days)</label>
-                                    <input 
-                                        type="number" 
-                                        placeholder="e.g. 28" 
+                                    <input
+                                        type="number"
+                                        placeholder="e.g. 28"
                                         className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
                                         value={formData.cycleLength}
-                                        onChange={(e) => setFormData({...formData, cycleLength: e.target.value})}
+                                        onChange={(e) => setFormData({ ...formData, cycleLength: e.target.value })}
                                     />
                                 </div>
                                 <p className="text-sm text-[#5A3E6B]/60 italic">
@@ -147,14 +147,14 @@ export default function OnboardingPage() {
 
                     <div className="mt-12 flex gap-4">
                         {step > 1 && (
-                            <button 
+                            <button
                                 onClick={handleBack}
                                 className="flex-1 p-4 rounded-2xl border border-[#C8B6E2]/20 text-[#5A3E6B]/60 hover:bg-[#FAF7F2] transition"
                             >
                                 Back
                             </button>
                         )}
-                        <button 
+                        <button
                             onClick={handleNext}
                             className="flex-[2] bloom-btn-primary py-4 rounded-2xl shadow-xl"
                         >

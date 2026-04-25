@@ -512,7 +512,7 @@ export default function BloomLandingPage() {
             <div className="text-xs tracking-[0.2em] uppercase text-[#FF8C7A] mb-4">Sharing the glow</div>
             <h2 className="font-serif text-4xl md:text-5xl tracking-tight">Voices of Bloom</h2>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
