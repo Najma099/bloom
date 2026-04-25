@@ -35,7 +35,7 @@ export default function LoginPage() {
                 </p>
 
                 <button 
-                    onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+                    onClick={() => signIn("google", { callbackUrl: "/onboarding" })}
                     className="w-full h-14 flex items-center justify-center bg-white border border-[#C8B6E2]/40 rounded-full hover:bg-[#FAF7F2] transition-all text-[#5A3E6B] font-medium shadow-sm hover:shadow-md"
                 >
                     <GoogleIcon />

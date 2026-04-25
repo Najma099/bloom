@@ -49,13 +49,13 @@ const MOODS = [
 ];
 
 const WEEK_DATA = [
-    { day: 'Sun', energy: 30, color: '#DDEBD7' },
-    { day: 'Mon', energy: 45, color: '#EDE6F4' },
-    { day: 'Tue', energy: 85, color: '#FCE8DA' },
-    { day: 'Wed', energy: 70, color: '#FF8C7A' },
-    { day: 'Thu', energy: 95, color: '#E8A0BF' },
-    { day: 'Fri', energy: 60, color: '#C8B6E2' },
-    { day: 'Sat', energy: 40, color: '#FAF7F2' },
+    { day: 'Sun', energy: 40, color: '#FF8C7A' },
+    { day: 'Mon', energy: 40, color: '#5A3E6B' },
+    { day: 'Tue', energy: 80, color: '#FF8C7A' },
+    { day: 'Wed', energy: 80, color: '#5A3E6B' },
+    { day: 'Thu', energy: 100, color: '#FF8C7A' },
+    { day: 'Fri', energy: 60, color: '#5A3E6B' },
+    { day: 'Sat', energy: 40, color: '#FF8C7A' },
 ];
 
 export default function ProgressPage() {
@@ -137,31 +137,105 @@ export default function ProgressPage() {
                         </div>
                     </div>
 
-                    <div className="flex items-end gap-4 h-80 px-4 relative">
-                        {/* Grid lines */}
-                        <div className="absolute inset-x-0 bottom-12 border-b border-[#FAF7F2]" />
-                        <div className="absolute inset-x-0 bottom-[40%] border-b border-[#FAF7F2] opacity-50" />
-                        <div className="absolute inset-x-0 bottom-[70%] border-b border-[#FAF7F2] opacity-30" />
+                    <div className="h-80 relative px-4 bg-white/20 rounded-[3rem] p-8 border border-white/40 shadow-inner">
+                        <svg className="w-full h-full" viewBox="0 0 700 320" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="energyGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="#FF8C7A" stopOpacity="0.4" />
+                                    <stop offset="100%" stopColor="#5A3E6B" stopOpacity="0" />
+                                </linearGradient>
+                                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feGaussianBlur stdDeviation="4" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+                            
+                            {/* Smooth Curve Path */}
+                            <path 
+                                d={`M 50,${320 - (WEEK_DATA[0].energy * 3)} 
+                                   ${WEEK_DATA.slice(1).map((d, i) => {
+                                       const prev = WEEK_DATA[i];
+                                       const curr = d;
+                                       const cx1 = i * 100 + 100;
+                                       const cy1 = 320 - (prev.energy * 3);
+                                       const cx2 = i * 100 + 100;
+                                       const cy2 = 320 - (curr.energy * 3);
+                                       return `C ${cx1},${cy1} ${cx2},${cy2} ${i * 100 + 150},${320 - (curr.energy * 3)}`;
+                                   }).join(' ')}`}
+                                fill="none"
+                                stroke="#FF8C7A"
+                                strokeWidth="8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                filter="url(#glow)"
+                                className="animate-draw-path"
+                                style={{ strokeDasharray: 2000, strokeDashoffset: 2000 }}
+                            />
+                            
+                            {/* Area Fill */}
+                            <path 
+                                d={`M 50,320 L 50,${320 - (WEEK_DATA[0].energy * 3)} 
+                                   ${WEEK_DATA.slice(1).map((d, i) => {
+                                       const prev = WEEK_DATA[i];
+                                       const curr = d;
+                                       const cx1 = i * 100 + 100;
+                                       const cy1 = 320 - (prev.energy * 3);
+                                       const cx2 = i * 100 + 100;
+                                       const cy2 = 320 - (curr.energy * 3);
+                                       return `C ${cx1},${cy1} ${cx2},${cy2} ${i * 100 + 150},${320 - (curr.energy * 3)}`;
+                                   }).join(' ')} L 650,320 Z`}
+                                fill="url(#energyGradient)"
+                                className="animate-fade-in"
+                            />
 
-                        {WEEK_DATA.map((data, i) => (
-                            <div key={i} className="flex-1 flex flex-col items-center gap-6 group relative z-10">
-                                <div
-                                    className="w-full rounded-full transition-all duration-1000 ease-in-out hover:scale-[1.05] relative overflow-hidden"
-                                    style={{
-                                        height: `${data.energy}%`,
-                                        backgroundColor: data.color,
-                                        boxShadow: `0 10px 20px -10px ${data.color}`
-                                    }}
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent" />
-                                    <div className="opacity-0 group-hover:opacity-100 absolute -top-12 left-1/2 -translate-x-1/2 bg-[#5A3E6B] text-white text-[10px] py-2 px-4 rounded-full transition-all whitespace-nowrap shadow-2xl font-bold tracking-widest">
-                                        LEVEL: {Math.round(data.energy / 20)}
-                                    </div>
+                            {/* Refined Data Points */}
+                            {WEEK_DATA.map((d, i) => (
+                                <g key={i} className="group/point">
+                                    <circle 
+                                        cx={i * 100 + 50} 
+                                        cy={320 - (d.energy * 3)} 
+                                        r="12" 
+                                        fill="white" 
+                                        className="opacity-0 group-hover/point:opacity-100 transition-all duration-300"
+                                    />
+                                    <circle 
+                                        cx={i * 100 + 50} 
+                                        cy={320 - (d.energy * 3)} 
+                                        r="6" 
+                                        fill="#5A3E6B" 
+                                        stroke="white" 
+                                        strokeWidth="3" 
+                                        className="cursor-pointer transition-all duration-500 group-hover/point:scale-150 animate-pulse outline-none"
+                                    />
+                                    <text 
+                                        x={i * 100 + 50} 
+                                        y={320 - (d.energy * 3) - 30} 
+                                        textAnchor="middle" 
+                                        className="text-[10px] font-bold fill-[#5A3E6B] opacity-0 group-hover/point:opacity-100 transition-opacity uppercase tracking-widest"
+                                    >
+                                        Level: {Math.round(d.energy / 20)}
+                                    </text>
+                                </g>
+                            ))}
+                        </svg>
+
+                        <div className="flex justify-between mt-10 px-6">
+                            {WEEK_DATA.map((d, i) => (
+                                <div key={i} className="flex flex-col items-center gap-2 w-[100px]">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5A3E6B]/40">{d.day}</span>
                                 </div>
-                                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#5A3E6B]/30">{data.day}</span>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
+
+                    <style jsx>{`
+                        @keyframes draw {
+                            to { stroke-dashoffset: 0; }
+                        }
+                        .animate-draw-path {
+                            animation: draw 3s ease-out forwards;
+                        }
+                    `}</style>
                 </div>
 
                 <div className="grid lg:grid-cols-5 gap-12 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
@@ -192,11 +266,21 @@ export default function ProgressPage() {
                                         <label className="block text-xs font-bold text-[#5A3E6B]/40 uppercase tracking-[0.2em]">Energy reserves</label>
                                         <span className="font-serif text-2xl text-[#FF8C7A]">{energy}/5</span>
                                     </div>
-                                    <input
-                                        type="range" min="1" max="5"
-                                        value={energy} onChange={(e) => setEnergy(parseInt(e.target.value))}
-                                        className="w-full h-2 bg-[#FAF7F2] rounded-full appearance-none cursor-pointer accent-[#FF8C7A]"
-                                    />
+                                    <div className="relative h-4 bg-[#5A3E6B]/15 rounded-full overflow-hidden shadow-inner flex items-center group/slider">
+                                        <div 
+                                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#E8A0BF] to-[#FF8C7A] shadow-[0_0_15px_rgba(255,140,122,0.6)] group-hover/slider:brightness-110 transition-all" 
+                                            style={{ width: `${(energy / 5) * 100}%` }}
+                                        />
+                                        <input 
+                                            type="range" min="1" max="5" 
+                                            value={energy} onChange={(e) => setEnergy(parseInt(e.target.value))}
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" 
+                                        />
+                                    </div>
+                                    <div className="flex justify-between mt-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#5A3E6B]/30">
+                                        <span>Soft exhale</span>
+                                        <span>Full bloom</span>
+                                    </div>
                                 </div>
 
                                 <div>

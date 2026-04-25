@@ -1,168 +1,274 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Navbar from '@/components/Navbar';
 
+const SparklesIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className || "w-5 h-5"}>
+        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
+        <path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path>
+    </svg>
+)
+
 export default function OnboardingPage() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
     const [step, setStep] = useState(1);
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         age: '',
         weight: '',
-        height: '',
-        dietary: 'Vegetarian',
-        goal: 'Hormone Balance',
-        cycleLength: '28'
+        heightFt: '5',
+        heightIn: '4',
+        dietary: '',
+        goal: '',
+        cycleLength: '',
+        lastPeriodStartDate: '',
+        lastPeriodEndDate: ''
     });
 
+    useEffect(() => {
+        if (status === 'unauthenticated') {
+            router.push('/login');
+        }
+    }, [status, router]);
+
+    const validateStep = () => {
+        setError('');
+        if (step === 1) {
+            if (!formData.age || !formData.weight) {
+                setError('Please fill in your age and weight to continue.');
+                return false;
+            }
+        } else if (step === 2) {
+            if (!formData.dietary || !formData.goal) {
+                setError('Please select your preference and focus.');
+                return false;
+            }
+        } else if (step === 3) {
+            if (!formData.lastPeriodStartDate || !formData.lastPeriodEndDate || !formData.cycleLength) {
+                setError('Please provide your cycle dates and length.');
+                return false;
+            }
+        }
+        return true;
+    };
+
     const handleNext = () => {
-        if (step < 3) setStep(step + 1);
-        else {
-            // Save to local storage for mock persistence
-            localStorage.setItem('bloom_onboarding_completed', 'true');
-            router.push('/dashboard');
+        if (validateStep()) {
+            if (step < 3) setStep(step + 1);
+            else {
+                localStorage.setItem('bloom_user_profile', JSON.stringify(formData));
+                localStorage.setItem('bloom_onboarding_completed', 'true');
+                router.push('/dashboard');
+            }
         }
     };
 
     const handleBack = () => {
+        setError('');
         if (step > 1) setStep(step - 1);
     };
 
+    if (status === 'loading') return <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center font-serif italic text-[#5A3E6B]">Blooming...</div>;
+
     return (
-        <div className="min-h-screen bg-[#FAF7F2] text-[#5A3E6B]">
-            <div className="max-w-xl mx-auto px-6 py-20">
-                <div className="mb-12 text-center animate-fade-in-up">
-                    <div className="w-16 h-16 bg-[#FF8C7A]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#FF8C7A]"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"></path><circle cx="12" cy="8" r="2"></circle><path d="M12 10v12"></path><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"></path><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"></path></svg>
+        <div className="min-h-screen bg-[#FAF7F2] text-[#5A3E6B] relative overflow-hidden">
+            <Navbar activePage="" />
+
+            {/* Background Aesthetics */}
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#FF8C7A]/20 rounded-full blur-[150px] animate-pulse" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#C8B6E2]/20 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }} />
+            </div>
+
+            <main className="max-w-3xl mx-auto px-6 py-20 relative z-10">
+                <div className="mb-16 text-center animate-fade-in-up">
+                    <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/80 border border-white shadow-sm mb-10 text-[10px] tracking-[0.4em] uppercase text-[#FF8C7A] font-black">
+                        <SparklesIcon className="w-4 h-4" /> The Beginning of Bloom
                     </div>
-                    <h1 className="font-serif text-4xl mb-3">Welcome to Bloom, {session?.user?.name?.split(' ')[0]}</h1>
-                    <p className="text-[#5A3E6B]/60">Let's tailor your journey to your unique rhythm.</p>
+                    <h1 className="font-serif text-5xl md:text-6xl mb-6 tracking-tight text-[#5A3E6B]">Hello, {session?.user?.name?.split(' ')[0]}</h1>
+                    <p className="text-[#5A3E6B]/60 text-xl italic max-w-lg mx-auto leading-relaxed">"Let's map your unique biological resonance to find your perfect flow."</p>
                 </div>
 
-                <div className="bloom-card p-10 shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-1 bg-[#FAF7F2]">
-                        <div
-                            className="h-full bg-gradient-to-r from-[#E8A0BF] to-[#FF8C7A] transition-all duration-500"
+                <div className="bloom-card bg-white/80 backdrop-blur-3xl p-10 md:p-16 shadow-[0_40px_100px_-30px_rgba(90,62,107,0.2)] rounded-[4rem] border-none relative overflow-hidden">
+                    {/* Progress Visual */}
+                    <div className="absolute top-0 left-0 w-full h-2 bg-[#FAF7F2]">
+                        <div 
+                            className="h-full bg-gradient-to-r from-[#E8A0BF] to-[#FF8C7A] transition-all duration-1000 ease-in-out shadow-[0_0_15px_#FF8C7A]" 
                             style={{ width: `${(step / 3) * 100}%` }}
                         />
                     </div>
 
-                    {step === 1 && (
-                        <div className="animate-fade-in-up">
-                            <h2 className="font-serif text-2xl mb-8">The Basics</h2>
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">How old are you?</label>
-                                    <input
-                                        type="number"
-                                        placeholder="Age"
-                                        className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
-                                        value={formData.age}
-                                        onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                                    />
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium mb-2">Weight (kg)</label>
-                                        <input
-                                            type="number"
-                                            placeholder="kg"
-                                            className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
-                                            value={formData.weight}
-                                            onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-2">Height (cm)</label>
-                                        <input
-                                            type="number"
-                                            placeholder="cm"
-                                            className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
-                                            value={formData.height}
-                                            onChange={(e) => setFormData({ ...formData, height: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
+                    <div className="min-h-[460px] flex flex-col">
+                        {error && (
+                            <div className="mb-8 p-4 bg-red-50 border-l-4 border-red-400 text-red-600 text-sm animate-fade-in">
+                                {error}
                             </div>
-                        </div>
-                    )}
-
-                    {step === 2 && (
-                        <div className="animate-fade-in-up">
-                            <h2 className="font-serif text-2xl mb-8">Nourishment & Goals</h2>
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">Dietary Preference</label>
-                                    <select
-                                        className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
-                                        value={formData.dietary}
-                                        onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
-                                    >
-                                        <option>Vegetarian</option>
-                                        <option>Vegan</option>
-                                        <option>Eggitarian</option>
-                                        <option>Non-Vegetarian</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">Primary Goal</label>
-                                    <select
-                                        className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
-                                        value={formData.goal}
-                                        onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-                                    >
-                                        <option>Hormone Balance</option>
-                                        <option>Weight Management</option>
-                                        <option>Cycle Regularity</option>
-                                        <option>Skin & Hair Health</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {step === 3 && (
-                        <div className="animate-fade-in-up">
-                            <h2 className="font-serif text-2xl mb-8">Cycle Details</h2>
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium mb-2">Average Cycle Length (days)</label>
-                                    <input
-                                        type="number"
-                                        placeholder="e.g. 28"
-                                        className="w-full p-4 rounded-2xl bg-[#FAF7F2] border-none focus:ring-2 focus:ring-[#E8A0BF]"
-                                        value={formData.cycleLength}
-                                        onChange={(e) => setFormData({ ...formData, cycleLength: e.target.value })}
-                                    />
-                                </div>
-                                <p className="text-sm text-[#5A3E6B]/60 italic">
-                                    Don't worry, we'll help you track this as we go. Bloom is about finding your natural rhythm, not perfection.
-                                </p>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="mt-12 flex gap-4">
-                        {step > 1 && (
-                            <button
-                                onClick={handleBack}
-                                className="flex-1 p-4 rounded-2xl border border-[#C8B6E2]/20 text-[#5A3E6B]/60 hover:bg-[#FAF7F2] transition"
-                            >
-                                Back
-                            </button>
                         )}
-                        <button
-                            onClick={handleNext}
-                            className="flex-[2] bloom-btn-primary py-4 rounded-2xl shadow-xl"
-                        >
-                            {step === 3 ? "Let's Bloom" : "Next Step"}
-                        </button>
+
+                        {step === 1 && (
+                            <div className="animate-fade-in-up">
+                                <span className="text-[10px] uppercase font-black tracking-widest text-[#FF8C7A] mb-4 block">Section 01 · Foundations</span>
+                                <h2 className="font-serif text-4xl mb-12">The Basics</h2>
+                                <div className="space-y-10">
+                                    <div className="group">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4 transition-colors group-focus-within:text-[#FF8C7A]">Your Age</label>
+                                        <input 
+                                            type="number" 
+                                            required
+                                            placeholder="What's your age?" 
+                                            className="w-full p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif"
+                                            value={formData.age}
+                                            onChange={(e) => setFormData({...formData, age: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className="grid md:grid-cols-2 gap-10">
+                                        <div className="group">
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Weight (kg)</label>
+                                            <input 
+                                                type="number" required placeholder="kg" 
+                                                className="w-full p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif"
+                                                value={formData.weight}
+                                                onChange={(e) => setFormData({...formData, weight: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="group">
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Height (Scrolling Select)</label>
+                                            <div className="flex gap-4">
+                                                <select 
+                                                    className="flex-1 p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif appearance-none text-center cursor-pointer"
+                                                    value={formData.heightFt}
+                                                    onChange={(e) => setFormData({...formData, heightFt: e.target.value})}
+                                                >
+                                                    {[3,4,5,6,7].map(f => <option key={f} value={f}>{f} ft</option>)}
+                                                </select>
+                                                <select 
+                                                    className="flex-1 p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif appearance-none text-center cursor-pointer"
+                                                    value={formData.heightIn}
+                                                    onChange={(e) => setFormData({...formData, heightIn: e.target.value})}
+                                                >
+                                                    {[0,1,2,3,4,5,6,7,8,9,10,11].map(i => <option key={i} value={i}>{i} in</option>)}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {step === 2 && (
+                            <div className="animate-fade-in-up">
+                                <span className="text-[10px] uppercase font-black tracking-widest text-[#FF8C7A] mb-4 block">Section 02 · Harmony</span>
+                                <h2 className="font-serif text-4xl mb-12">Nourishment & Joy</h2>
+                                <div className="space-y-10">
+                                    <div className="group">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Dietary Rhythm</label>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {['Vegetarian', 'Vegan', 'Eggitarian', 'Non-Vegetarian'].map(d => (
+                                                <button 
+                                                    key={d}
+                                                    type="button"
+                                                    onClick={() => setFormData({...formData, dietary: d})}
+                                                    className={`p-6 rounded-[2rem] text-sm font-bold tracking-widest uppercase transition-all border-2 ${formData.dietary === d ? 'bg-[#5A3E6B] text-white border-[#5A3E6B] shadow-xl scale-105' : 'bg-[#FAF7F2] border-transparent text-[#5A3E6B]/40 hover:bg-[#FAF7F2]'}`}
+                                                >
+                                                    {d}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="group">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Your Intent today</label>
+                                        <select 
+                                            className="w-full p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif appearance-none cursor-pointer px-10"
+                                            value={formData.goal}
+                                            onChange={(e) => setFormData({...formData, goal: e.target.value})}
+                                        >
+                                            <option value="">Select your focus...</option>
+                                            <option value="Hormone Balance">Hormone Balance</option>
+                                            <option value="Weight Management">Weight Management</option>
+                                            <option value="Cycle Regularity">Cycle Regularity</option>
+                                            <option value="Skin & Hair Health">Skin & Hair Health</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {step === 3 && (
+                            <div className="animate-fade-in-up">
+                                <span className="text-[10px] uppercase font-black tracking-widest text-[#FF8C7A] mb-4 block">Section 03 · Rhythm</span>
+                                <h2 className="font-serif text-4xl mb-12">The Cycle</h2>
+                                <div className="space-y-10">
+                                    <div className="grid md:grid-cols-2 gap-8">
+                                        <div className="group">
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Start of Last Period</label>
+                                            <input 
+                                                type="date" 
+                                                required
+                                                className="w-full p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif cursor-pointer"
+                                                value={formData.lastPeriodStartDate}
+                                                onChange={(e) => setFormData({...formData, lastPeriodStartDate: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="group">
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">End of Last Period</label>
+                                            <input 
+                                                type="date" 
+                                                required
+                                                className="w-full p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif cursor-pointer"
+                                                value={formData.lastPeriodEndDate}
+                                                onChange={(e) => setFormData({...formData, lastPeriodEndDate: e.target.value})}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="group">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Cycle Length (Days)</label>
+                                        <input 
+                                            type="number" required placeholder="Usually 28 to 30 days" 
+                                            className="w-full p-6 h-20 rounded-[2rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-xl shadow-inner font-serif"
+                                            value={formData.cycleLength}
+                                            onChange={(e) => setFormData({...formData, cycleLength: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className="p-8 rounded-[3rem] bg-[#5A3E6B] text-white relative shadow-2xl overflow-hidden group/tip">
+                                        <p className="text-sm leading-relaxed italic relative z-10">
+                                            "Knowledge is your superpower. These dates help Bloom determine where you are in your cycle so we can suggest the exact nutrients and movements you need today."
+                                        </p>
+                                        <LeafIcon className="absolute top-0 right-0 w-32 h-32 opacity-20 -mr-16 -mt-16 group-hover/tip:rotate-12 transition-transform duration-1000" />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="mt-auto pt-16 flex gap-6">
+                            {step > 1 && (
+                                <button 
+                                    onClick={handleBack}
+                                    className="px-10 py-6 rounded-[2rem] border-2 border-[#C8B6E2]/20 text-[#5A3E6B]/40 hover:bg-[#FAF7F2] transition tracking-[0.2em] uppercase text-xs font-black"
+                                >
+                                    Back
+                                </button>
+                            )}
+                            <button 
+                                onClick={handleNext}
+                                className="flex-1 bloom-btn-primary py-6 rounded-[2rem] text-lg shadow-[0_20px_50px_-10px_rgba(255,140,122,0.4)] hover:shadow-[0_30px_70px_-10px_rgba(255,140,122,0.6)] hover:translate-y-[-4px] active:translate-y-0 active:shadow-none transition-all"
+                            >
+                                {step === 3 ? "Start Blooming" : "Stay Focused · Next"}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 }
+
+const LeafIcon = ({ className }: { className?: string }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+    </svg>
+);
