@@ -180,7 +180,7 @@ const meals: Meal[] = [
     type: 'Breakfast',
     TypeIcon: CoffeeIcon,
     name: 'Warm Beetroot & Jaggery Poha',
-    image: 'https://images.unsplash.com/photo-1567337710282-00832b415979?w=600&q=80',
+    image: '/assets/images/Beetroot_rice.jpeg',
     alt: 'Warm beetroot and jaggery poha served in a bowl with garnish',
     reason: 'Rich in iron and natural sugars to replenish energy during your menstrual phase.',
   },
@@ -188,7 +188,7 @@ const meals: Meal[] = [
     type: 'Lunch',
     TypeIcon: UtensilsIcon,
     name: 'Palak Dal with Brown Rice',
-    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&q=80',
+    image: '/assets/images/Palak_dal_brownRice.jpeg',
     alt: 'Palak dal with brown rice served in a traditional Indian bowl',
     reason: 'Spinach and lentils provide folate and protein to support your follicular phase.',
   },
@@ -196,7 +196,7 @@ const meals: Meal[] = [
     type: 'Dinner',
     TypeIcon: UtensilsIcon,
     name: 'Paneer Tikka with Mint Chutney',
-    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80',
+    image: '/assets/images/rice_Rajma.jpeg',
     alt: 'Grilled paneer tikka with fresh mint chutney on a wooden board',
     reason: 'High-protein paneer supports muscle recovery during your peak ovulatory phase.',
   },
@@ -231,11 +231,9 @@ const seasonal = [
   { name: 'Beetroot', season: 'Winter', benefit: 'Replenishes iron stores', image: 'https://images.unsplash.com/photo-1593105544559-ecb03bf76f82?w=400&q=80', alt: 'Fresh beetroot with green leaves on wooden surface' },
   { name: 'Spinach', season: 'Winter', benefit: 'Folate + iron', image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80', alt: 'Fresh green spinach leaves in a bowl' },
   { name: 'Pumpkin', season: 'Autumn', benefit: 'Soothes cravings', image: 'https://images.unsplash.com/photo-1506917728037-b6af01a7d403?w=400&q=80', alt: 'Orange pumpkin on rustic wooden background' },
-  { name: 'Mango', season: 'Summer', benefit: 'Vitamin C + joy', image: 'https://images.unsplash.com/photo-1605027990121-cbae9e0642db?w=400&q=80', alt: 'Ripe yellow mango sliced on a plate' },
   { name: 'Coconut', season: 'Year-round', benefit: 'Hydration + electrolytes', image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400&q=80', alt: 'Fresh coconut halved showing white flesh' },
   { name: 'Almonds', season: 'Year-round', benefit: 'Magnesium + healthy fats', image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=400&q=80', alt: 'Raw almonds scattered on a light surface' },
-  { name: 'Methi (Fenugreek)', season: 'Winter', benefit: 'Eases cramps', image: 'https://images.unsplash.com/photo-1615485290449-9ba9d59f5dd8?w=400&q=80', alt: 'Fresh fenugreek methi leaves in a bunch' },
-];
+]
 
 const weekBars = [40, 65, 50, 80, 60, 90, 70];
 

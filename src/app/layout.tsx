@@ -9,8 +9,8 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Balance — PCOS Movement Program Built Around Your Cycle',
-  description: 'Hormone-adapted exercise programming for women with PCOS. Train with your cycle, not against it — strength, timing, and real clinical context.',
+  title: 'Bloom — Built Around Your Cycle',
+  description: 'Hormone-adapted exercise programming and nutrition. Train with your cycle, not against it — strength, timing, and soulful Indian nourishment.',
   icons: {
     icon: [
       { url: '/assets/images/app_logo.png', type: 'image/x-icon' }

@@ -40,11 +40,9 @@ const SEASONAL = [
     { name: 'Beetroot', season: 'Winter', benefit: 'Replenishes iron stores', image: 'https://images.unsplash.com/photo-1593105544559-ecb03bf76f82?w=400&q=80' },
     { name: 'Spinach', season: 'Winter', benefit: 'Folate + iron', image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80' },
     { name: 'Pumpkin', season: 'Autumn', benefit: 'Soothes cravings', image: 'https://images.unsplash.com/photo-1506917728037-b6af01a7d403?w=400&q=80' },
-    { name: 'Mango', season: 'Summer', benefit: 'Vitamin C + joy', image: 'https://images.unsplash.com/photo-1605027990121-cbae9e0642db?w=400&q=80' },
     { name: 'Coconut', season: 'Year-round', benefit: 'Hydration + electrolytes', image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400&q=80' },
     { name: 'Almonds', season: 'Year-round', benefit: 'Magnesium + healthy fats', image: 'https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=400&q=80' },
-    { name: 'Methi (Fenugreek)', season: 'Winter', benefit: 'Eases cramps', image: 'https://images.unsplash.com/photo-1615485290449-9ba9d59f5dd8?w=400&q=80' },
-];
+]
 
 export default function InsightsPage() {
     const [selectedMood, setSelectedMood] = useState('calm');
