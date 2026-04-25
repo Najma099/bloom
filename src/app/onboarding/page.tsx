@@ -23,6 +23,8 @@ export default function OnboardingPage() {
         heightFt: '5',
         heightIn: '4',
         dietary: '',
+        allergies: '',
+        workoutPersona: 'Yoga', // Default
         goal: '',
         cycleLength: '',
         lastPeriodStartDate: '',
@@ -162,23 +164,75 @@ export default function OnboardingPage() {
                         {step === 2 && (
                             <div className="animate-fade-in-up">
                                 <span className="text-[10px] uppercase font-black tracking-widest text-[#FF8C7A] mb-4 block">Section 02 · Harmony</span>
-                                <h2 className="font-serif text-4xl mb-12">Nourishment & Joy</h2>
+                                <h2 className="font-serif text-4xl mb-6 text-[#5A3E6B]">Nourishment & Joy</h2>
+                                
                                 <div className="space-y-10">
+                                    {/* Dietary */}
                                     <div className="group">
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Dietary Rhythm</label>
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4 transition-colors group-hover:text-[#FF8C7A]">Dietary Rhythm</label>
                                         <div className="grid grid-cols-2 gap-4">
                                             {['Vegetarian', 'Vegan', 'Eggitarian', 'Non-Vegetarian'].map(d => (
                                                 <button 
                                                     key={d}
                                                     type="button"
                                                     onClick={() => setFormData({...formData, dietary: d})}
-                                                    className={`p-6 rounded-[2rem] text-sm font-bold tracking-widest uppercase transition-all border-2 ${formData.dietary === d ? 'bg-[#5A3E6B] text-white border-[#5A3E6B] shadow-xl scale-105' : 'bg-[#FAF7F2] border-transparent text-[#5A3E6B]/40 hover:bg-[#FAF7F2]'}`}
+                                                    className={`p-6 rounded-[2rem] text-[10px] font-black tracking-[0.2em] uppercase transition-all border-2 ${formData.dietary === d ? 'bg-[#5A3E6B] text-white border-[#5A3E6B] shadow-lg scale-[1.02]' : 'bg-[#FAF7F2] border-transparent text-[#5A3E6B]/40 hover:border-[#C8B6E2]/30'}`}
                                                 >
                                                     {d}
                                                 </button>
                                             ))}
                                         </div>
                                     </div>
+
+                                    {/* Allergies */}
+                                    <div className="group">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Any Allergies? <span className="text-[10px] lowercase italic font-normal tracking-normal">(Optional)</span></label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Nuts, Dairy, Soy... or leave empty" 
+                                            className="w-full p-6 h-16 rounded-[1.5rem] bg-[#FAF7F2] border-2 border-transparent focus:border-[#E8A0BF]/40 focus:bg-white focus:outline-none transition-all text-lg shadow-inner font-serif"
+                                            value={formData.allergies}
+                                            onChange={(e) => setFormData({...formData, allergies: e.target.value})}
+                                        />
+                                    </div>
+
+                                    {/* Persona Drag and Drop */}
+                                    <div className="group">
+                                        <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-6">Your Workout Soul <span className="text-[10px] lowercase italic font-normal tracking-normal">(Drag your vibe to choose)</span></label>
+                                        
+                                        <div className="flex items-center justify-between gap-6 p-4 bg-[#FAF7F2] rounded-[3rem] border border-[#C8B6E2]/20 relative">
+                                            {/* Yoga Target */}
+                                            <div 
+                                                onDragOver={(e) => e.preventDefault()}
+                                                onDrop={() => setFormData({...formData, workoutPersona: 'Yoga'})}
+                                                className={`flex-1 aspect-square rounded-[2rem] flex flex-col items-center justify-center p-4 transition-all duration-500 ${formData.workoutPersona === 'Yoga' ? 'bg-[#EDE6F4] border-2 border-[#C8B6E2] shadow-xl scale-105' : 'bg-white opacity-40 grayscale hover:grayscale-0 hover:opacity-70'}`}
+                                            >
+                                                <div className="text-3xl mb-3">🧘‍♀️</div>
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-[#5A3E6B]">Yoga</span>
+                                            </div>
+
+                                            {/* Draggable Vibe */}
+                                            <div 
+                                                draggable 
+                                                onDragStart={(e) => e.dataTransfer.setData('text/plain', 'vibe')}
+                                                className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FF8C7A] to-[#E8A0BF] flex items-center justify-center shadow-2xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform animate-pulse text-white"
+                                            >
+                                                <SparklesIcon className="w-8 h-8" />
+                                            </div>
+
+                                            {/* Exercise Target */}
+                                            <div 
+                                                onDragOver={(e) => e.preventDefault()}
+                                                onDrop={() => setFormData({...formData, workoutPersona: 'Exercise'})}
+                                                className={`flex-1 aspect-square rounded-[2rem] flex flex-col items-center justify-center p-4 transition-all duration-500 ${formData.workoutPersona === 'Exercise' ? 'bg-[#FCE8DA] border-2 border-[#FF8C7A] shadow-xl scale-105' : 'bg-white opacity-40 grayscale hover:grayscale-0 hover:opacity-70'}`}
+                                            >
+                                                <div className="text-3xl mb-3">🏋️‍♀️</div>
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-[#5A3E6B]">Exercise</span>
+                                            </div>
+                                        </div>
+                                        <p className="mt-4 text-center text-[10px] text-[#5A3E6B]/40 italic">Currently selected: <span className="font-bold text-[#FF8C7A] uppercase">{formData.workoutPersona}</span></p>
+                                    </div>
+
                                     <div className="group">
                                         <label className="block text-xs font-bold uppercase tracking-widest text-[#5A3E6B]/40 mb-4">Your Intent today</label>
                                         <select 
