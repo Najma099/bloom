@@ -1,91 +1,89 @@
-# Next.js
+<div align="center">
+  <img src="public/assets/images/app_logo.png" alt="Bloom Logo" width="120" />
+  <h1>Bloom — Built Around Your Cycle</h1>
+  <p>Hormone-adapted exercise programming and nutrition. Train with your cycle, not against it — strength, timing, and soulful Indian nourishment.</p>
+</div>
 
-A modern Next.js 15 application built with TypeScript and Tailwind CSS.
+---
 
-## 🚀 Features
+## 📖 About The Project
 
-- **Next.js 15** - Latest version with improved performance and features
-- **React 19** - Latest React version with enhanced capabilities
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
+Bloom is a Next.js web application designed to help users track and adapt their fitness and nutrition according to their menstrual cycle. By providing personalized insights, hormone-adapted workout routines, and soulful Indian nutritional guidance, Bloom ensures that you're working *with* your body to achieve optimal health and balance.
 
-## 🛠️ Installation
+## ✨ Key Features
 
-1. Install dependencies:
-  ```bash
-  npm install
-  # or
-  yarn install
-  ```
+- **Cycle-Synced Dashboard**: A centralized view of your current cycle phase, upcoming activities, and daily insights.
+- **Hormone-Adapted Workouts**: Exercise routines tailored to your energy levels and physiological state during different phases of your cycle.
+- **Nutritional Guidance**: Meal recommendations focusing on soulful Indian nourishment that support hormonal balance.
+- **Progress Tracking**: Visualize your fitness journey and cycle patterns over time using beautiful, interactive charts.
+- **Secure Authentication**: Safe and reliable user login and data protection.
 
-2. Start the development server:
-  ```bash
-  npm run dev
-  # or
-  yarn dev
-  ```
-3. Open [http://localhost:4028](http://localhost:4028) with your browser to see the result.
+## 🛠️ Tech Stack
 
-## 📁 Project Structure
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **Data Visualization**: [Recharts](https://recharts.org/)
 
+## 📂 Project Structure
+
+```text
+bloom/
+├── public/                 # Static assets (images, icons, etc.)
+└── src/
+    ├── app/                # Next.js App Router pages and layouts
+    │   ├── api/            # API Routes
+    │   ├── dashboard/      # User Dashboard
+    │   ├── home/           # Landing Page / Home View
+    │   ├── insights/       # Data and analytics views
+    │   ├── login/          # Authentication pages
+    │   ├── meals/          # Nutrition and recipe pages
+    │   ├── onboarding/     # Initial user setup flows
+    │   ├── progress/       # User tracking and progress
+    │   └── workout/        # Exercise routines
+    ├── components/         # Reusable React components
+    │   ├── providers/      # Context and State Providers
+    │   └── ui/             # Generic UI components
+    └── styles/             # Global CSS and Tailwind configurations
 ```
-nextjs/
-├── public/             # Static assets
-├── src/
-│   ├── app/            # App router components
-│   │   ├── layout.tsx  # Root layout component
-│   │   └── page.tsx    # Main page component
-│   ├── components/     # Reusable UI components
-│   ├── styles/         # Global styles and Tailwind configuration
-├── next.config.mjs     # Next.js configuration
-├── package.json        # Project dependencies and scripts
-├── postcss.config.js   # PostCSS configuration
-└── tailwind.config.js  # Tailwind CSS configuration
 
-```
+## 🚀 Getting Started
 
-## 🧩 Page Editing
+To get a local copy up and running, follow these simple steps.
 
-You can start editing the page by modifying `src/app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-## 🎨 Styling
+Ensure you have Node.js and npm (or pnpm/yarn/bun) installed on your local machine.
 
-This project uses Tailwind CSS for styling with the following features:
-- Utility-first approach for rapid development
-- Custom theme configuration
-- Responsive design utilities
-- PostCSS and Autoprefixer integration
+### Installation
 
-## 📦 Available Scripts
+1. **Clone the repository** (if applicable) or navigate to the project directory:
+   ```bash
+   cd bloom
+   ```
 
-- `npm run dev` - Start development server on port 4028
-- `npm run build` - Build the application for production
-- `npm run start` - Start the development server
-- `npm run serve` - Start the production server
-- `npm run lint` - Run ESLint to check code quality
-- `npm run lint:fix` - Fix ESLint issues automatically
-- `npm run format` - Format code with Prettier
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-## 📱 Deployment
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
 
-Build the application for production:
+4. **Open the application**:
+   Open [http://localhost:4028](http://localhost:4028) in your browser to see the result.
 
-  ```bash
-  npm run build
-  ```
+## 📜 Available Scripts
 
-## 📚 Learn More
+In the project directory, you can run:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial
-
-You can check out the [Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## 🙏 Acknowledgments
-
-- Built with [Rocket.new](https://rocket.new)
-- Powered by Next.js and React
-- Styled with Tailwind CSS
-
-Built with ❤️ on Rocket.new
+- `npm run dev`: Runs the app in development mode on port 4028.
+- `npm run build`: Builds the app for production.
+- `npm start`: Starts the production server.
+- `npm run lint`: Runs ESLint to catch and fix potential issues.
+- `npm run format`: Formats code using Prettier.
+- `npm run type-check`: Checks for TypeScript errors without emitting files.
