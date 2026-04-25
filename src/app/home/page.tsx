@@ -590,6 +590,106 @@ export default function BloomLandingPage() {
         </div>
       </section>
 
+      {/* ===== SUBSCRIPTION ===== */}
+      <section id="pricing" className="py-24 md:py-32 bg-[#FAF7F2]">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="text-center mb-20">
+            <div className="text-xs tracking-[0.2em] uppercase text-[#FF8C7A] mb-4">The Bloom Experience</div>
+            <h2 className="font-serif text-4xl md:text-5xl tracking-tight mb-6">Invest in your <span className="italic text-[#FF8C7A]">rhythm.</span></h2>
+            <p className="text-[#5A3E6B]/70 text-lg max-w-2xl mx-auto italic">
+              "Your body is a temple, and its cycle is the prayer. Nurture it with precision and care."
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto relative z-10">
+            {/* Free */}
+            <div className="bloom-card bg-white p-8 flex flex-col justify-between transition-all duration-500 hover:scale-[1.02] border border-[#C8B6E2]/10 shadow-xl opacity-90">
+              <div>
+                <div className="bg-[#A8C3A0] text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-full inline-block mb-4">
+                  Start Gently
+                </div>
+                <h3 className="font-serif text-2xl mb-2">Freemium Trial</h3>
+                <p className="text-xs text-[#5A3E6B]/50 mb-8 tracking-tight italic min-h-[32px]">Experience the soft resonance of Bloom.</p>
+                <div className="mb-8">
+                  <span className="text-4xl font-serif text-[#5A3E6B]">₹0</span>
+                  <span className="text-sm text-[#5A3E6B]/40 ml-1">· 5 days</span>
+                </div>
+                <div className="space-y-4 mb-10">
+                  {['Introductory workouts', 'Daily meal inspirations', 'Basic cycle tracking', 'Morning daily whispers'].map((f) => (
+                    <div key={f} className="flex items-start gap-2">
+                      <div className="p-1 rounded-full mt-0.5 bg-[#A8C3A0]/10 text-[#A8C3A0]">
+                        <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <span className="text-xs text-[#5A3E6B]/70">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Link href="/subscribe" className="w-full py-4 rounded-xl text-center bg-[#A8C3A0] text-white text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg hover:bg-[#97b28f] transition-all">Try Free</Link>
+            </div>
+
+            {/* Monthly */}
+            <div className="bloom-card bg-white p-8 flex flex-col justify-between transition-all duration-500 hover:scale-[1.02] border border-[#C8B6E2]/10 shadow-xl opacity-90">
+              <div>
+                <div className="h-8" />
+                <h3 className="font-serif text-2xl mb-2">Monthly Bloom</h3>
+                <p className="text-xs text-[#5A3E6B]/50 mb-8 tracking-tight italic min-h-[32px]">Perfect for starting your cycle-syncing journey.</p>
+                <div className="mb-8">
+                  <span className="text-4xl font-serif text-[#5A3E6B]">₹199</span>
+                  <span className="text-sm text-[#5A3E6B]/40 ml-1">/ month</span>
+                </div>
+                <div className="space-y-4 mb-10">
+                  {['Full access to all workouts', 'Daily Smart Indian Meals', 'Personalized cycle tracking', 'Insightful hormone nudges'].map((f) => (
+                    <div key={f} className="flex items-start gap-2">
+                      <div className="p-1 rounded-full mt-0.5 bg-[#5A3E6B]/5 text-[#5A3E6B]/40">
+                        <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <span className="text-xs text-[#5A3E6B]/70">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Link href="/subscribe" className="w-full py-4 rounded-xl text-center bg-[#C8B6E2]/20 text-[#5A3E6B] text-[10px] font-bold uppercase tracking-[0.2em] border border-[#C8B6E2]/40 hover:bg-[#C8B6E2]/40 hover:shadow-lg transition-all">Choose Monthly</Link>
+            </div>
+
+            {/* Yearly */}
+            <div className="bloom-card bg-white p-8 flex flex-col justify-between transition-all duration-500 hover:scale-[1.02] border-2 border-[#FF8C7A] shadow-2xl scale-105 z-10">
+              <div>
+                <div className="bg-[#FF8C7A] text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-full inline-block mb-4 shadow-[0_5px_15px_rgba(255,140,122,0.4)]">
+                  Most Soulful Value
+                </div>
+                <h3 className="font-serif text-2xl mb-2">Annual Bloom</h3>
+                <p className="text-xs text-[#5A3E6B]/50 mb-8 tracking-tight italic min-h-[32px]">The best value for long-term hormonal harmony.</p>
+                <div className="mb-8">
+                  <span className="text-4xl font-serif text-[#5A3E6B]">₹1999</span>
+                  <span className="text-sm text-[#5A3E6B]/40 ml-1">/ year</span>
+                </div>
+                <div className="space-y-4 mb-10">
+                  {['Everything in Monthly', '2 months for free', 'Exclusive seasonal guides', 'Long-term progress trends'].map((f) => (
+                    <div key={f} className="flex items-start gap-2">
+                      <div className="p-1 rounded-full mt-0.5 bg-[#FF8C7A]/10 text-[#FF8C7A]">
+                        <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <span className="text-xs text-[#5A3E6B]/70">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Link href="/subscribe" className="w-full py-4 rounded-xl text-center bloom-btn-primary shadow-xl hover:translate-y-[-4px] transition-all">Choose Annual</Link>
+            </div>
+          </div>
+
+          <div className="mt-20 text-center animate-fade-in-up">
+            <p className="text-sm text-[#5A3E6B]/40 mb-4 font-bold tracking-widest uppercase">Special Invitation</p>
+            <div className="inline-block bg-[#DDEBD7]/30 border border-white p-8 rounded-[3rem] max-w-xl">
+               <p className="text-[#5A3E6B]/70 leading-relaxed italic">
+                 "New to Bloom? We invite you to explore every ritual and rhythm **freely for 5 days**. No strings, just soul."
+               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== FOOTER ===== */}
       <footer className="py-12 border-t border-[#C8B6E2]/20 bg-[#FAF7F2]">
         <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#5A3E6B]/60">
