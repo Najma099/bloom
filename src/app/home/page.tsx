@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Link from 'next/link';
 
 // ---- SVG Icons ----
 const FlowerIcon = ({ className }: { className?: string }) => (
@@ -250,7 +251,7 @@ export default function BloomLandingPage() {
             <FlowerIcon className="w-6 h-6 text-[#FF8C7A]" />
             <span className="font-serif text-2xl tracking-tight">Bloom</span>
           </div>
-          <button className="bloom-btn-secondary text-sm py-2 px-5">Sign in</button>
+          <Link href="/login" className="bloom-btn-secondary text-sm py-2 px-5">Sign in</Link>
         </div>
       </header>
 
@@ -277,9 +278,9 @@ export default function BloomLandingPage() {
               Cycle-aware workouts, soulful Indian nutrition, and gentle daily care — made for the woman who deserves to feel understood.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <button className="bloom-btn-primary">
+              <Link href="/login" className="bloom-btn-primary">
                 Start Your Journey <ArrowRightIcon className="w-4 h-4" />
-              </button>
+              </Link>
               <a href="#how-it-works" className="bloom-btn-secondary">See how it works</a>
             </div>
           </div>
@@ -498,6 +499,53 @@ export default function BloomLandingPage() {
                 <h3 className="font-serif text-lg">{s.name}</h3>
                 <p className="text-xs uppercase tracking-widest text-[#5A3E6B]/50 mt-1">{s.season}</p>
                 <p className="text-sm text-[#5A3E6B]/70 mt-3">{s.benefit}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TESTIMONIALS ===== */}
+      <section className="py-24 md:py-32 bg-[#FAF7F2] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="max-w-2xl mb-16">
+            <div className="text-xs tracking-[0.2em] uppercase text-[#FF8C7A] mb-4">Sharing the glow</div>
+            <h2 className="font-serif text-4xl md:text-5xl tracking-tight">Voices of Bloom</h2>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                text: "Bloom changed how I see my body. I no longer feel guilty for resting during my period. It's truly a gentler way to live.",
+                author: "Ananya S.",
+                role: "Marketing lead",
+                image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop"
+              },
+              {
+                text: "The meal suggestions are so familiar yet scientifically backed. My energy levels have never been this stable throughout the month.",
+                author: "Priya K.",
+                role: "Yoga Instructor",
+                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop"
+              },
+              {
+                text: "Finally, an app that doesn't yell at me to do HIIT when I'm in my luteal phase. It feels like a friend who actually understands me.",
+                author: "Meera R.",
+                role: "Software Engineer",
+                image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop"
+              }
+            ].map((t, i) => (
+              <div key={i} className="bloom-card flex flex-col h-full hover:scale-[1.02] transition-all duration-300">
+                <div className="text-[#FF8C7A] text-4xl font-serif mb-6">&ldquo;</div>
+                <p className="text-[#5A3E6B]/80 leading-relaxed mb-8 flex-grow italic">
+                  {t.text}
+                </p>
+                <div className="flex items-center gap-4 mt-auto">
+                  <img src={t.image} alt={t.author} className="w-12 h-12 rounded-full object-cover border-2 border-[#C8B6E2]/20" />
+                  <div>
+                    <div className="font-serif text-lg leading-tight">{t.author}</div>
+                    <div className="text-xs text-[#5A3E6B]/50 tracking-wide uppercase">{t.role}</div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
