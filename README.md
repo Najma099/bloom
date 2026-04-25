@@ -1,9 +1,4 @@
-<div align="center">
-  <h1>Bloom — Built Around Your Cycle</h1>
-  <p>Hormone-adapted exercise programming and nutrition. Train with your cycle, not against it — strength, timing, and soulful Indian nourishment.</p>
-</div>
-
----
+# Bloom
 
 ##  About The Project
 
